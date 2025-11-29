@@ -3,7 +3,7 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>حاسبة أرباح FC 26 (النسخة النهائية - مُصلحة)</title>
+    <title>حاسبة أرباح FC 26</title>
     <style>
         /* 1. تنسيق الوضع الداكن (Dark Theme) */
         :root {
@@ -12,27 +12,28 @@
             --text-color: #e0e0e0; 
             --input-bg: #2e2e2e; 
             --border-color: #444;
-            --profit-color: #66BB6A; /* أخضر */
-            --loss-color: #EF5350;   /* أحمر */
-            --update-color: #FFC107; /* أصفر */
+            --profit-color: #66BB6A; 
+            --loss-color: #EF5350;   
+            --update-color: #FFC107; 
             --delete-color: #dc3545;
             --edit-color: #17a2b8;
-            --total-color: #007bff; /* أزرق للإجمالي */
-            --buy-color: #ff9800; /* برتقالي للشراء */
-            --sell-color: #2196F3; /* أزرق للبيع */
-            --pdf-button-color: #dc3545; /* أحمر للتصدير */
-            --reset-button-color: #6c757d; /* رمادي لإعادة التعيين */
+            --total-color: #007bff; 
+            --buy-color: #ff9800; 
+            --sell-color: #2196F3; 
+            --pdf-button-color: #dc3545; 
+            --reset-button-color: #6c757d; 
         }
 
         body {
             font-family: 'Arial', sans-serif;
             background-color: var(--bg-color);
             color: var(--text-color);
+            /* إزالة الـ centering العمودي للسماح بالتمرير الطبيعي */
             display: flex;
             justify-content: center;
             align-items: flex-start;
             min-height: 100vh;
-            padding: 40px 20px;
+            padding: 20px 10px; /* تقليل الـ padding ليناسب الجوال */
             margin: 0;
             direction: rtl; 
         }
@@ -40,26 +41,26 @@
         #main-container {
             display: flex;
             flex-direction: column;
-            gap: 30px;
+            gap: 20px; /* تقليل الفراغ */
             width: 100%;
-            max-width: 900px;
+            max-width: 700px; /* تقليل العرض الأقصى قليلاً */
         }
-
-        .calculator {
+        
+        .calculator, .saved-deals-container {
             background-color: var(--card-color);
-            padding: 30px;
-            border-radius: 12px;
-            box-shadow: 0 8px 25px rgba(0, 0, 0, 0.5);
+            padding: 20px; /* تقليل الـ padding */
+            border-radius: 10px;
+            box-shadow: 0 4px 15px rgba(0, 0, 0, 0.4);
             width: 100%;
         }
 
-        /* تنسيقات المدخلات والأزرار (مختصرة) */
+        /* تنسيقات المدخلات والأزرار */
         input[type="number"], input[type="text"] {
             width: 100%;
-            padding: 12px;
-            margin-bottom: 20px;
+            padding: 10px;
+            margin-bottom: 15px; /* تقليل الـ margin */
             border: 1px solid var(--border-color);
-            border-radius: 6px;
+            border-radius: 5px;
             box-sizing: border-box; 
             text-align: right;
             background-color: var(--input-bg);
@@ -67,46 +68,103 @@
         }
 
         button {
-            padding: 10px 15px;
+            padding: 10px;
             border: none;
-            border-radius: 6px;
+            border-radius: 5px;
             cursor: pointer;
             font-weight: bold;
             transition: background-color 0.3s;
+            margin-top: 5px;
+            font-size: 0.9em;
+        }
+
+        #actionButton, #exportPdfButton, #resetAllDealsButton {
+            width: 100%;
             margin-top: 10px;
-            font-size: 0.9em;
         }
 
-        #actionButton {
-            background-color: var(--profit-color);
-            color: var(--card-color);
-            width: 100%;
-            font-size: 1em;
-            margin-bottom: 5px;
+        /* --------------------------------- */
+        /* تصميم قائمة الصفقات المتجاوب (Flexbox) */
+        /* --------------------------------- */
+        .deal-item {
+            display: flex;
+            flex-direction: column; /* جعل العناصر تتكدس عمودياً افتراضياً (لشاشات الجوال) */
+            justify-content: space-between;
+            align-items: flex-start; /* محاذاة العناصر إلى اليمين */
+            padding: 15px;
+            margin-bottom: 10px;
+            border: 1px solid var(--border-color);
+            border-radius: 8px;
+            background-color: #242424;
+            position: relative;
         }
 
-        #actionButton.updating {
-            background-color: var(--update-color);
-            color: #2c2c2c;
+        .deal-info {
+            flex-grow: 1; /* للسماح لها بأخذ المساحة الأكبر */
+            margin-bottom: 10px;
+        }
+
+        .deal-profit {
+            font-size: 1.1em;
+            font-weight: bold;
+            display: block; /* لجعل الربح في سطر منفصل */
+            margin-bottom: 10px;
+        }
+
+        .deal-actions {
+            display: flex;
+            gap: 10px;
+            width: 100%; /* جعل الأزرار تأخذ عرض العنصر */
         }
         
-        #exportPdfButton {
-            background-color: var(--pdf-button-color);
-            color: white;
-            width: 100%;
-            font-size: 1em;
-            margin-top: 15px;
-        }
-        
-        #resetAllDealsButton {
-            background-color: var(--reset-button-color);
-            color: white;
-            width: 100%;
-            font-size: 0.9em;
-            margin-top: 20px;
+        .deal-actions button {
+            flex: 1; /* توزيع الأزرار بالتساوي */
         }
 
-        /* تنسيق قسم التجميع الشامل */
+
+        /* --------------------------------- */
+        /* استعلام الوسائط (Media Query) للشاشات الأكبر (الكمبيوتر اللوحي والكمبيوتر) */
+        /* --------------------------------- */
+        @media (min-width: 600px) {
+            #main-container {
+                max-width: 900px;
+            }
+
+            .calculator, .saved-deals-container {
+                padding: 30px;
+            }
+            
+            /* على الشاشات الكبيرة، نجعل العناصر أفقية */
+            .deal-item {
+                flex-direction: row; /* العودة إلى التوزيع الأفقي */
+                align-items: center; /* محاذاة في المنتصف عمودياً */
+            }
+
+            .deal-info {
+                margin-bottom: 0;
+            }
+            
+            .deal-profit {
+                display: inline-block;
+                margin-left: 20px;
+                margin-right: 20px;
+                min-width: 120px; /* ضمان مساحة كافية للرقم */
+                text-align: right;
+            }
+
+            .deal-actions {
+                width: auto;
+                gap: 5px;
+                margin-right: 10px;
+            }
+            
+            .deal-actions button {
+                flex: none; /* إلغاء التوزيع المتساوي للأزرار */
+                width: 80px; 
+            }
+        }
+        
+        /* تنسيق الملخص (Summary Box) */
         .summary-box {
             background-color: #242424; 
             padding: 20px;
@@ -127,42 +185,29 @@
         .profit { color: var(--profit-color); }
         .loss { color: var(--loss-color); }
 
-        /* تنسيق قائمة الصفقات */
-        .saved-deals-container {
-            background-color: var(--card-color);
-            padding: 30px;
-            border-radius: 12px;
-            box-shadow: 0 8px 25px rgba(0, 0, 0, 0.5);
-            width: 100%;
-        }
-
-        .deal-item {
-            display: flex;
-            justify-content: space-between;
-            align-items: center;
-            padding: 15px;
-            margin-bottom: 10px;
-            border: 1px solid var(--border-color);
-            border-radius: 8px;
-            background-color: #242424;
-        }
-        
         /* --------------------------------- */
-        /* 2. تنسيقات خاصة بالطباعة (لـ PDF) */
+        /* 3. تنسيقات خاصة بالطباعة (لـ PDF) */
         /* --------------------------------- */
         @media print {
-            /* إخفاء العناصر غير المرغوب فيها في PDF */
             .calculator, #noDealsMessage, .deal-actions, #exportPdfButton, #cancelEditButton, #actionButton, #resetAllDealsButton {
                 display: none !important;
             }
-
-            /* إظهار الخلفيات والألوان لـ PDF */
             body, #main-container, .saved-deals-container {
                 background-color: white !important;
                 color: #333 !important; 
                 box-shadow: none !important;
                 padding: 0 !important;
                 margin: 0 auto !important;
+            }
+            .deal-item {
+                flex-direction: row !important; /* ضمان العرض الأفقي في PDF */
+                align-items: center !important;
+            }
+            .deal-profit {
+                display: inline-block !important;
+                min-width: 150px !important; 
+                margin-left: 10px !important;
+                margin-right: 10px !important;
             }
             .profit { color: green !important; }
             .loss { color: red !important; }
@@ -249,7 +294,7 @@
     let editingDealId = null;
 
     // ------------------------------------
-    // دالة جديدة: إعادة تعيين جميع الصفقات
+    // الدوال (كما هي)
     // ------------------------------------
     window.resetAllDeals = function() {
         if (confirm('⚠️ هل أنت متأكد من حذف جميع الصفقات المحفوظة؟ لن تتمكن من استعادتها.')) {
@@ -261,9 +306,6 @@
         }
     }
     
-    // ------------------------------------
-    // باقي الدوال (كما هي)
-    // ------------------------------------
     window.exportToPdf = function() {
         window.print();
     }
@@ -306,7 +348,6 @@
             return storedDeals ? JSON.parse(storedDeals) : [];
         } catch (e) {
             console.error("Local Storage data corrupted, clearing saved deals.", e);
-            // إذا كانت البيانات تالفة، قم بحذفها تلقائيًا
             localStorage.removeItem(STORAGE_KEY); 
             return [];
         }
@@ -445,7 +486,6 @@
         }
 
         deals.forEach(deal => {
-            // معالجة الصفقات القديمة/المتضررة
             if (deal.totalSell === undefined || deal.totalBuy === undefined || deal.profit === undefined) {
                 const sellPrice = parseFloat(deal.sell) || 0;
                 const buyPrice = parseFloat(deal.buy) || 0;
@@ -459,7 +499,6 @@
             
             const profitValue = deal.profit;
             
-            // تجميع الإجماليات
             totalProfit += profitValue; 
             grandTotalBuy += deal.totalBuy; 
             grandTotalSell += deal.totalSell;
@@ -489,7 +528,6 @@
             list.appendChild(listItem);
         });
 
-        // عرض الإجماليات النهائية
         document.getElementById('totalBuy').textContent = `${formatNumber(grandTotalBuy)} كوينز`;
         document.getElementById('totalSell').textContent = `${formatNumber(grandTotalSell)} كوينز`;
         document.getElementById('totalNetRevenue').textContent = `${formatNumber(grandTotalNetRevenue)} كوينز`;
