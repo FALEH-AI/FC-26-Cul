@@ -17,23 +17,24 @@
             --update-color: #FFC107; 
             --delete-color: #dc3545;
             --edit-color: #17a2b8;
+            --view-color: #66BB6A; /* أزرق */
             --total-color: #007bff; 
             --buy-color: #ff9800; 
             --sell-color: #2196F3; 
-            --pdf-button-color: #dc3545; 
-            --reset-button-color: #6c757d; 
+            --pdf-button-color: #6c757d; 
+            --reset-button-color: #dc3545; 
+            --add-row-color: #17a2b8; 
         }
 
         body {
             font-family: 'Arial', sans-serif;
             background-color: var(--bg-color);
             color: var(--text-color);
-            /* إزالة الـ centering العمودي للسماح بالتمرير الطبيعي */
             display: flex;
             justify-content: center;
             align-items: flex-start;
             min-height: 100vh;
-            padding: 20px 10px; /* تقليل الـ padding ليناسب الجوال */
+            padding: 20px 10px; 
             margin: 0;
             direction: rtl; 
         }
@@ -41,24 +42,23 @@
         #main-container {
             display: flex;
             flex-direction: column;
-            gap: 20px; /* تقليل الفراغ */
+            gap: 20px; 
             width: 100%;
-            max-width: 700px; /* تقليل العرض الأقصى قليلاً */
+            max-width: 900px; 
         }
         
         .calculator, .saved-deals-container {
             background-color: var(--card-color);
-            padding: 20px; /* تقليل الـ padding */
+            padding: 20px; 
             border-radius: 10px;
             box-shadow: 0 4px 15px rgba(0, 0, 0, 0.4);
             width: 100%;
         }
 
-        /* تنسيقات المدخلات والأزرار */
+        /* تنسيقات المدخلات والأزرار العامة */
         input[type="number"], input[type="text"] {
             width: 100%;
             padding: 10px;
-            margin-bottom: 15px; /* تقليل الـ margin */
             border: 1px solid var(--border-color);
             border-radius: 5px;
             box-sizing: border-box; 
@@ -76,95 +76,183 @@
             transition: background-color 0.3s;
             margin-top: 5px;
             font-size: 0.9em;
+            color: white; /* ضمان لون النص الأبيض لجميع الأزرار */
         }
+        
+        /* تنسيق الأزرار الرئيسية */
+        #addRowButton { background-color: var(--add-row-color); }
+        #actionButton { background-color: var(--view-color); }
+        #exportPdfButton { background-color: var(--pdf-button-color); }
+        #resetAllDealsButton { background-color: var(--reset-button-color); }
+        #cancelEditButton { background-color: var(--reset-button-color); }
+
 
         #actionButton, #exportPdfButton, #resetAllDealsButton {
             width: 100%;
             margin-top: 10px;
         }
+        
+        #addRowButton {
+            width: 100%;
+            margin-bottom: 20px;
+        }
 
         /* --------------------------------- */
-        /* تصميم قائمة الصفقات المتجاوب (Flexbox) */
+        /* تنسيق صفوف الإدخال الديناميكية */
+        /* --------------------------------- */
+        .input-row {
+            display: flex;
+            flex-wrap: wrap; 
+            gap: 10px;
+            margin-bottom: 15px;
+            padding: 15px;
+            border: 1px solid var(--border-color);
+            border-radius: 8px;
+            background-color: #242424;
+            align-items: center; 
+        }
+        
+        .input-row label {
+             font-size: 0.8em;
+             margin-bottom: 5px;
+             color: #aaa;
+             display: block; 
+        }
+        
+        .input-group {
+            flex: 1;
+            min-width: 110px; 
+        }
+        
+        .input-group.name-field {
+            flex: 2; 
+            min-width: 130px; 
+        }
+        
+        /* زر حذف الصف الفرعي */
+        .remove-row-btn {
+            background-color: var(--delete-color);
+            color: white;
+            width: 60px; 
+            height: 40px; 
+            padding: 0 5px; 
+            margin: 0;
+            flex-shrink: 0;
+            font-size: 0.8em; 
+            margin-top: 0; 
+        }
+
+        /* --------------------------------- */
+        /* تصميم قائمة الصفقات المحفوظة */
         /* --------------------------------- */
         .deal-item {
             display: flex;
-            flex-direction: column; /* جعل العناصر تتكدس عمودياً افتراضياً (لشاشات الجوال) */
+            flex-direction: column; 
             justify-content: space-between;
-            align-items: flex-start; /* محاذاة العناصر إلى اليمين */
+            align-items: flex-start; 
             padding: 15px;
             margin-bottom: 10px;
             border: 1px solid var(--border-color);
             border-radius: 8px;
             background-color: #242424;
-            position: relative;
+        }
+        
+        .deal-actions {
+            display: flex;
+            gap: 5px; 
+            width: 100%; 
+        }
+        
+        .deal-actions button {
+            flex: 1; 
+            width: auto; 
+            font-size: 0.85em; 
         }
 
+        /* تنسيق أزرار الإجراءات في القائمة المحفوظة */
+        .view-details-btn {
+            background-color: var(--view-color);
+        }
+        .edit-btn {
+            background-color: var(--edit-color);
+        }
+        .delete-btn {
+            background-color: var(--delete-color);
+        }
+        
         .deal-info {
-            flex-grow: 1; /* للسماح لها بأخذ المساحة الأكبر */
+            flex-grow: 1; 
             margin-bottom: 10px;
         }
 
         .deal-profit {
             font-size: 1.1em;
             font-weight: bold;
-            display: block; /* لجعل الربح في سطر منفصل */
+            display: block; 
             margin-bottom: 10px;
         }
-
-        .deal-actions {
-            display: flex;
-            gap: 10px;
-            width: 100%; /* جعل الأزرار تأخذ عرض العنصر */
+        
+        .deal-info p {
+            font-size: 0.9em;
+            margin: 5px 0 0;
+            color: #ccc;
         }
         
-        .deal-actions button {
-            flex: 1; /* توزيع الأزرار بالتساوي */
+        .sub-deal-details {
+            margin-top: 15px;
+            padding: 10px;
+            background-color: #2a2a2a;
+            border-radius: 6px;
+            display: none; 
+            width: 100%; 
+        }
+        
+        .sub-deal-details h4 {
+            margin-top: 0;
+            border-bottom: 1px solid #444;
+            padding-bottom: 5px;
+            color: var(--total-color);
+        }
+        
+        .sub-deal-row {
+            font-size: 0.85em;
+            padding: 3px 0;
+            border-bottom: 1px dotted #333;
+        }
+        .sub-deal-row:last-child {
+            border-bottom: none;
         }
 
-
         /* --------------------------------- */
-        /* استعلام الوسائط (Media Query) للشاشات الأكبر (الكمبيوتر اللوحي والكمبيوتر) */
+        /* استعلام الوسائط (Media Query) للشاشات الأكبر */
         /* --------------------------------- */
         @media (min-width: 600px) {
-            #main-container {
-                max-width: 900px;
+            .input-row {
+                flex-wrap: nowrap;
             }
-
-            .calculator, .saved-deals-container {
-                padding: 30px;
-            }
-            
-            /* على الشاشات الكبيرة، نجعل العناصر أفقية */
             .deal-item {
-                flex-direction: row; /* العودة إلى التوزيع الأفقي */
-                align-items: center; /* محاذاة في المنتصف عمودياً */
+                flex-direction: row; 
+                align-items: center; 
             }
-
-            .deal-info {
-                margin-bottom: 0;
-            }
-            
+            .deal-info { margin-bottom: 0; }
             .deal-profit {
                 display: inline-block;
                 margin-left: 20px;
                 margin-right: 20px;
-                min-width: 120px; /* ضمان مساحة كافية للرقم */
+                min-width: 120px; 
                 text-align: right;
             }
-
             .deal-actions {
                 width: auto;
                 gap: 5px;
                 margin-right: 10px;
             }
-            
             .deal-actions button {
-                flex: none; /* إلغاء التوزيع المتساوي للأزرار */
-                width: 80px; 
+                flex: none; 
+                width: 90px; 
             }
         }
         
-        /* تنسيق الملخص (Summary Box) */
         .summary-box {
             background-color: #242424; 
             padding: 20px;
@@ -189,35 +277,25 @@
         /* 3. تنسيقات خاصة بالطباعة (لـ PDF) */
         /* --------------------------------- */
         @media print {
-            .calculator, #noDealsMessage, .deal-actions, #exportPdfButton, #cancelEditButton, #actionButton, #resetAllDealsButton {
-                display: none !important;
+            .calculator, #noDealsMessage, .deal-actions, #exportPdfButton, #cancelEditButton, #actionButton, #resetAllDealsButton, #addRowButton, .remove-row-btn {
+                display: none !important; 
             }
+            
+            .sub-deal-details {
+                display: block !important;
+                background-color: #f0f0f0 !important;
+                border: 1px solid #ddd !important;
+                color: #333 !important;
+                -webkit-print-color-adjust: exact; 
+                color-adjust: exact;
+            }
+            
             body, #main-container, .saved-deals-container {
                 background-color: white !important;
                 color: #333 !important; 
                 box-shadow: none !important;
                 padding: 0 !important;
                 margin: 0 auto !important;
-            }
-            .deal-item {
-                flex-direction: row !important; /* ضمان العرض الأفقي في PDF */
-                align-items: center !important;
-            }
-            .deal-profit {
-                display: inline-block !important;
-                min-width: 150px !important; 
-                margin-left: 10px !important;
-                margin-right: 10px !important;
-            }
-            .profit { color: green !important; }
-            .loss { color: red !important; }
-            .summary-value.buy { color: #ff8c00 !important; }
-            .summary-value.sell { color: #007bff !important; }
-            .deal-item, .summary-box {
-                background-color: #f9f9f9 !important;
-                border: 1px solid #ddd !important;
-                -webkit-print-color-adjust: exact; 
-                color-adjust: exact;
             }
         }
     </style>
@@ -226,39 +304,31 @@
 
 <div id="main-container">
     <div class="calculator">
-        <h2>💰 حاسبة أرباح بيع اللاعبين (FC 26)</h2>
-
-        <div>
-            <label for="dealName">اسم الصفقة (اختياري):</label>
-            <input type="text" id="dealName" placeholder="مثال: مبادلة صلاح">
-        </div>
-
-        <div>
-            <label for="sellPrice">سعر البيع للاعب الواحد (كوينز):</label>
-            <input type="number" id="sellPrice" oninput="calculateProfit()" placeholder="أدخل سعر البيع..." min="0" step="100">
-        </div>
-
-        <div>
-            <label for="buyPrice">سعر الشراء للاعب الواحد (كوينز):</label>
-            <input type="number" id="buyPrice" oninput="calculateProfit()" placeholder="أدخل سعر الشراء..." min="0" step="100">
-        </div>
+        <h2>💰 حاسبة أرباح الصفقات المتعددة</h2>
         
         <div>
-            <label for="quantity">عدد اللاعبين المباعين:</label>
-            <input type="number" id="quantity" oninput="calculateProfit()" placeholder="أدخل العدد..." min="1" step="1">
+            <label for="dealName">اسم الصفقة الرئيسية (اختياري):</label>
+            <input type="text" id="dealName" placeholder="مثال: صفقات TOTW و ترقيات الدوري">
         </div>
+
+        <hr style="border-color: var(--border-color); margin: 20px 0;">
+
+        <div id="dynamicInputContainer">
+            </div>
+
+        <button id="addRowButton" onclick="addRow()">+ إضافة لاعب/صفقة فرعية</button>
 
         <div class="result" id="results">
-            <p><strong>الإيراد الإجمالي بعد الضريبة:</strong> <span id="netRevenue">0</span> كوينز</p>
-            <p><strong>الربح / الخسارة الصافية الإجمالية:</strong> <span id="netProfit" class="profit">0</span> كوينز</p>
+            <p><strong>الإيراد الصافي بعد الضريبة (5%):</strong> <span id="netRevenue">0</span> كوينز</p>
+            <p><strong>الربح / الخسارة الصافية الكلية:</strong> <span id="netProfit" class="profit">0</span> كوينز</p>
         </div>
         
-        <button id="actionButton" class="saving" onclick="handleAction()">حفظ الصفقة</button>
-        <button id="cancelEditButton" onclick="cancelEdit()">إلغاء التعديل والعودة للحفظ</button>
+        <button id="actionButton" class="saving" onclick="handleAction()">حفظ الصفقة الرئيسية</button>
+        <button id="cancelEditButton" onclick="cancelEdit()" style="display: none;">إلغاء التعديل والعودة للحفظ</button>
     </div>
 
     <div class="saved-deals-container">
-        <h2>📂 الصفقات المحفوظة</h2>
+        <h2>📂 الصفقات المحفوظة (الإجمالية)</h2>
         <ul id="savedDealsList">
             </ul>
         <p id="noDealsMessage" style="text-align: center; color: #888;">لا توجد صفقات محفوظة بعد.</p>
@@ -266,15 +336,15 @@
         <div id="summaryBox" class="summary-box" style="display: none;">
             <h3>📊 ملخص الصفقات الإجمالي</h3>
             <div class="summary-item">
-                <span>إجمالي سعر الشراء (التكلفة):</span>
+                <span>إجمالي التكلفة الكلية:</span>
                 <span id="totalBuy" class="summary-value buy">0 كوينز</span>
             </div>
              <div class="summary-item">
-                <span>إجمالي سعر البيع (الإجمالي الخام):</span>
+                <span>إجمالي سعر البيع الكلي (الخام):</span>
                 <span id="totalSell" class="summary-value sell">0 كوينز</span>
             </div>
             <div class="summary-item">
-                <span>إجمالي الإيراد بعد الضريبة (5%):</span>
+                <span>إجمالي الإيراد بعد الضريبة:</span>
                 <span id="totalNetRevenue" class="summary-value sell">0 كوينز</span>
             </div>
             <div class="summary-item">
@@ -283,19 +353,85 @@
             </div>
         </div>
         
-        <button id="exportPdfButton" onclick="exportToPdf()">📥 تصدير كملف PDF ملون</button>
+        <button id="exportPdfButton" onclick="exportToPdf()">📥 تصدير كملف PDF مفصل</button>
         <button id="resetAllDealsButton" onclick="resetAllDeals()">⚠️ إعادة تعيين وحذف جميع الصفقات</button>
     </div>
 </div>
 
 <script>
-    const STORAGE_KEY = 'fc26_saved_deals';
+    const STORAGE_KEY = 'fc26_saved_deals_v4'; 
     const TAX_RATE = 0.05;
     let editingDealId = null;
 
     // ------------------------------------
-    // الدوال (كما هي)
+    // دوال إدارة الصفوف الديناميكية
     // ------------------------------------
+    window.addRow = function(deal = null) {
+        const container = document.getElementById('dynamicInputContainer');
+        const rowId = deal ? deal.id : Date.now(); 
+        
+        const row = document.createElement('div');
+        row.className = 'input-row';
+        row.setAttribute('data-row-id', rowId);
+
+        const name = deal ? deal.name : '';
+        const sellPrice = deal ? deal.sell : '';
+        const buyPrice = deal ? deal.buy : '';
+        const quantity = deal ? deal.qty : (deal ? '' : '1');
+
+        row.innerHTML = `
+            <div class="input-group name-field">
+                <label>اسم اللاعب/الصفقة:</label>
+                <input type="text" class="deal-name-input" value="${name}" placeholder="الاسم (صلاح، مبادلة 87)...">
+            </div>
+            <div class="input-group">
+                <label>سعر البيع للوحدة:</label>
+                <input type="number" class="sell-price-input" value="${sellPrice}" oninput="calculateProfit()" placeholder="بيع" min="0" step="100">
+            </div>
+            <div class="input-group">
+                <label>سعر الشراء للوحدة:</label>
+                <input type="number" class="buy-price-input" value="${buyPrice}" oninput="calculateProfit()" placeholder="شراء" min="0" step="100">
+            </div>
+            <div class="input-group" style="flex: 0.7; min-width: 60px;">
+                <label>العدد:</label>
+                <input type="number" class="quantity-input" value="${quantity}" oninput="calculateProfit()" placeholder="عدد" min="1" step="1">
+            </div>
+            <button class="remove-row-btn" onclick="removeRow(this)">حذف</button>
+        `;
+        
+        container.appendChild(row);
+
+        if (!deal) {
+            calculateProfit();
+        }
+        
+        return row;
+    }
+    
+    window.removeRow = function(button) {
+        const row = button.closest('.input-row');
+        row.remove();
+        calculateProfit(); 
+    }
+
+    // ------------------------------------
+    // الدوال الجديدة والأساسية
+    // ------------------------------------
+    
+    window.toggleDealDetails = function(button) {
+        const listItem = button.closest('.deal-item');
+        const detailsDiv = listItem.querySelector('.sub-deal-details');
+        
+        if (detailsDiv.style.display === 'block') {
+            detailsDiv.style.display = 'none';
+            button.textContent = 'عرض التفاصيل';
+        } else {
+            detailsDiv.style.display = 'block';
+            button.textContent = 'إخفاء التفاصيل';
+        }
+    }
+
+
     window.resetAllDeals = function() {
         if (confirm('⚠️ هل أنت متأكد من حذف جميع الصفقات المحفوظة؟ لن تتمكن من استعادتها.')) {
             localStorage.removeItem(STORAGE_KEY);
@@ -316,16 +452,38 @@
     }
 
     function calculateProfit() {
-        const sellPrice = parseFloat(document.getElementById('sellPrice').value) || 0;
-        const buyPrice = parseFloat(document.getElementById('buyPrice').value) || 0;
-        const quantity = parseInt(document.getElementById('quantity').value) || 1; 
+        const rows = document.querySelectorAll('#dynamicInputContainer .input-row');
+        let totalNetProfit = 0;
+        let grandTotalSell = 0;
+        let grandTotalBuy = 0;
 
-        const totalSellPrice = sellPrice * quantity;
-        const totalBuyPrice = buyPrice * quantity;
-        const totalTax = totalSellPrice * TAX_RATE;
-        const totalNetRevenue = totalSellPrice - totalTax;
-        const totalNetProfit = totalNetRevenue - totalBuyPrice;
+        if (rows.length === 0) {
+            document.getElementById('netRevenue').textContent = formatNumber(0);
+            document.getElementById('netProfit').textContent = formatNumber(0);
+            document.getElementById('netProfit').className = 'deal-profit';
+            return { totalNetProfit: 0, totalSellPrice: 0, totalBuyPrice: 0, totalNetRevenue: 0 };
+        }
 
+        rows.forEach(row => {
+            const sellPrice = parseFloat(row.querySelector('.sell-price-input').value) || 0;
+            const buyPrice = parseFloat(row.querySelector('.buy-price-input').value) || 0;
+            const quantity = parseInt(row.querySelector('.quantity-input').value) || 0;
+
+            if (quantity > 0 && (sellPrice > 0 || buyPrice > 0)) {
+                const totalSell = sellPrice * quantity;
+                const totalBuy = buyPrice * quantity;
+                const totalTax = totalSell * TAX_RATE;
+                const netRevenue = totalSell - totalTax;
+                const netProfit = netRevenue - totalBuy;
+
+                grandTotalSell += totalSell;
+                grandTotalBuy += totalBuy;
+                totalNetProfit += netProfit;
+            }
+        });
+
+        const totalNetRevenue = grandTotalSell * (1 - TAX_RATE);
+        
         document.getElementById('netRevenue').textContent = formatNumber(totalNetRevenue);
         
         const netProfitElement = document.getElementById('netProfit');
@@ -339,7 +497,7 @@
             netProfitElement.className = 'deal-profit'; 
         }
 
-        return { totalNetProfit, sellPrice, buyPrice, quantity, totalSellPrice, totalBuyPrice, totalNetRevenue };
+        return { totalNetProfit, totalSellPrice: grandTotalSell, totalBuyPrice: grandTotalBuy, totalNetRevenue };
     }
 
     function getDealsFromStorage() {
@@ -362,24 +520,32 @@
     }
     
     function saveDeal() {
-        const { totalNetProfit, sellPrice, buyPrice, quantity, totalSellPrice, totalBuyPrice, totalNetRevenue } = calculateProfit();
-        let dealName = document.getElementById('dealName').value.trim() || `صفقة غير مُسماة (${new Date().toLocaleTimeString('ar-EG')})`;
-        
-        if (sellPrice <= 0) {
-            alert("الرجاء إدخال سعر بيع صحيح أكبر من صفر قبل الحفظ.");
+        const { totalNetProfit, totalSellPrice, totalBuyPrice, totalNetRevenue } = calculateProfit();
+        const rows = document.querySelectorAll('#dynamicInputContainer .input-row');
+
+        if (rows.length === 0 || (totalSellPrice <= 0 && totalBuyPrice <= 0)) {
+            alert("الرجاء إضافة صفقة فرعية واحدة على الأقل بأسعار.");
             return;
         }
+
+        let dealName = document.getElementById('dealName').value.trim() || `صفقة إجمالية غير مُسماة (${new Date().toLocaleTimeString('ar-EG')})`;
+        
+        const subDeals = Array.from(rows).map(row => ({
+            id: row.getAttribute('data-row-id'),
+            name: row.querySelector('.deal-name-input').value.trim() || 'غير مُسمى', 
+            sell: parseFloat(row.querySelector('.sell-price-input').value) || 0,
+            buy: parseFloat(row.querySelector('.buy-price-input').value) || 0,
+            qty: parseInt(row.querySelector('.quantity-input').value) || 0,
+        }));
         
         const newDeal = {
             id: Date.now(),
             name: dealName,
-            sell: sellPrice,
-            buy: buyPrice,
-            qty: quantity,
-            profit: totalNetProfit,
+            subDeals: subDeals, 
             totalSell: totalSellPrice, 
             totalBuy: totalBuyPrice,   
-            totalNetRevenue: totalNetRevenue 
+            totalNetRevenue: totalNetRevenue,
+            profit: totalNetProfit
         };
 
         const deals = getDealsFromStorage();
@@ -391,13 +557,23 @@
     }
     
     window.updateDeal = function(idToUpdate) {
-        const { totalNetProfit, sellPrice, buyPrice, quantity, totalSellPrice, totalBuyPrice, totalNetRevenue } = calculateProfit();
-        let dealName = document.getElementById('dealName').value.trim() || `صفقة مُعدلة (${new Date().toLocaleTimeString('ar-EG')})`;
+        const { totalNetProfit, totalSellPrice, totalBuyPrice, totalNetRevenue } = calculateProfit();
+        const rows = document.querySelectorAll('#dynamicInputContainer .input-row');
 
-        if (sellPrice <= 0) {
-            alert("الرجاء إدخال سعر بيع صحيح أكبر من صفر قبل التحديث.");
+        if (rows.length === 0 || (totalSellPrice <= 0 && totalBuyPrice <= 0)) {
+            alert("الرجاء إضافة صفقة فرعية واحدة على الأقل بأسعار.");
             return;
         }
+        
+        let dealName = document.getElementById('dealName').value.trim() || `صفقة مُعدلة (${new Date().toLocaleTimeString('ar-EG')})`;
+
+        const subDeals = Array.from(rows).map(row => ({
+            id: row.getAttribute('data-row-id'),
+            name: row.querySelector('.deal-name-input').value.trim() || 'غير مُسمى', 
+            sell: parseFloat(row.querySelector('.sell-price-input').value) || 0,
+            buy: parseFloat(row.querySelector('.buy-price-input').value) || 0,
+            qty: parseInt(row.querySelector('.quantity-input').value) || 0,
+        }));
 
         let deals = getDealsFromStorage();
         const index = deals.findIndex(deal => deal.id === idToUpdate);
@@ -406,13 +582,11 @@
             deals[index] = {
                 id: idToUpdate,
                 name: dealName,
-                sell: sellPrice,
-                buy: buyPrice,
-                qty: quantity,
-                profit: totalNetProfit,
+                subDeals: subDeals,
                 totalSell: totalSellPrice,
                 totalBuy: totalBuyPrice,
-                totalNetRevenue: totalNetRevenue
+                totalNetRevenue: totalNetRevenue,
+                profit: totalNetProfit
             };
             localStorage.setItem(STORAGE_KEY, JSON.stringify(deals));
             
@@ -429,9 +603,15 @@
 
         if (dealToEdit) {
             document.getElementById('dealName').value = dealToEdit.name;
-            document.getElementById('sellPrice').value = dealToEdit.sell;
-            document.getElementById('buyPrice').value = dealToEdit.buy;
-            document.getElementById('quantity').value = dealToEdit.qty;
+            
+            document.getElementById('dynamicInputContainer').innerHTML = '';
+            dealToEdit.subDeals.forEach(subDeal => addRow({
+                id: subDeal.id,
+                name: subDeal.name || '', 
+                sell: subDeal.sell,
+                buy: subDeal.buy,
+                qty: subDeal.qty
+            }));
 
             calculateProfit();
 
@@ -448,7 +628,7 @@
     window.cancelEdit = function() {
         editingDealId = null;
         const actionButton = document.getElementById('actionButton');
-        actionButton.textContent = 'حفظ الصفقة';
+        actionButton.textContent = 'حفظ الصفقة الرئيسية';
         actionButton.classList.remove('updating');
         actionButton.classList.add('saving');
         
@@ -458,9 +638,8 @@
     
     function clearInputFields() {
         document.getElementById('dealName').value = '';
-        document.getElementById('sellPrice').value = '';
-        document.getElementById('buyPrice').value = '';
-        document.getElementById('quantity').value = '1';
+        document.getElementById('dynamicInputContainer').innerHTML = ''; 
+        addRow(); 
         calculateProfit();
     }
 
@@ -486,20 +665,12 @@
         }
 
         deals.forEach(deal => {
-            if (deal.totalSell === undefined || deal.totalBuy === undefined || deal.profit === undefined) {
-                const sellPrice = parseFloat(deal.sell) || 0;
-                const buyPrice = parseFloat(deal.buy) || 0;
-                const quantity = parseInt(deal.qty) || 1;
-                
-                deal.totalSell = sellPrice * quantity;
-                deal.totalBuy = buyPrice * quantity;
-                deal.totalNetRevenue = deal.totalSell * (1 - TAX_RATE);
-                deal.profit = deal.totalNetRevenue - deal.totalBuy;
-            }
+            
+            if (deal.totalSell === undefined) { return; } 
             
             const profitValue = deal.profit;
             
-            totalProfit += profitValue; 
+            totalProfit += deal.profit; 
             grandTotalBuy += deal.totalBuy; 
             grandTotalSell += deal.totalSell;
             grandTotalNetRevenue += deal.totalNetRevenue;
@@ -509,21 +680,49 @@
             
             const profitClass = profitValue > 0 ? 'profit' : (profitValue < 0 ? 'loss' : '');
             const profitSign = Math.sign(profitValue) >= 0 ? '+' : ''; 
+            
+            const subDealCount = deal.subDeals ? deal.subDeals.length : 0;
+            
+            let subDealsHtml = '';
+            if (subDealCount > 0) {
+                subDealsHtml = `
+                    <div class="sub-deal-details">
+                        <h4>تفاصيل الصفقات الفرعية (${subDealCount} صفقة)</h4>
+                        ${deal.subDeals.map(sub => {
+                            const netSell = sub.sell * sub.qty * (1 - TAX_RATE);
+                            const netBuy = sub.buy * sub.qty;
+                            const subProfit = netSell - netBuy;
+                            const subProfitClass = subProfit > 0 ? 'profit' : (subProfit < 0 ? 'loss' : '');
+                            const subProfitSign = Math.sign(subProfit) >= 0 ? '+' : '';
+                            
+                            return `
+                                <div class="sub-deal-row">
+                                    <span style="font-weight: bold;">${sub.name || 'غير مُسمى'} (${formatNumber(sub.qty)}):</span>
+                                    بيع: ${formatNumber(sub.sell)} | شراء: ${formatNumber(sub.buy)} | 
+                                    الربح الصافي: <span class="${subProfitClass}">${subProfitSign}${formatNumber(subProfit)}</span>
+                                </div>
+                            `;
+                        }).join('')}
+                    </div>
+                `;
+            }
 
             listItem.innerHTML = `
                 <div class="deal-info">
                     <strong>${deal.name}</strong>
                     <p>
-                        بيع: ${formatNumber(deal.sell)} | شراء: ${formatNumber(deal.buy)} | عدد: ${formatNumber(deal.qty)}
+                        بيع إجمالي خام: ${formatNumber(deal.totalSell)} | تكلفة إجمالية: ${formatNumber(deal.totalBuy)}
                     </p>
                 </div>
                 <span class="deal-profit ${profitClass}">
                     ${profitSign}${formatNumber(profitValue)} كوينز
                 </span>
                 <div class="deal-actions">
+                    <button class="view-details-btn" onclick="toggleDealDetails(this)">عرض التفاصيل</button>
                     <button class="edit-btn" onclick="editDeal(${deal.id})">تعديل</button>
                     <button class="delete-btn" onclick="deleteDeal(${deal.id})">حذف</button>
                 </div>
+                ${subDealsHtml} 
             `;
             list.appendChild(listItem);
         });
@@ -556,6 +755,9 @@
     }
 
     window.onload = () => {
+        if (document.querySelectorAll('#dynamicInputContainer .input-row').length === 0) {
+             addRow();
+        }
         calculateProfit();
         renderDealsList();
     };
